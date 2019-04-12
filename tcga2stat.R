@@ -34,10 +34,23 @@ summary(rnaseq.ucs$clinical)
 
 ###############################################################################
 # Get RSEM normalized tumor-normal sample pairs data from TCGA
-
-
-
-
+brca.tum.norm <- TumorNormalMatch(rnaseq.brca$dat)
+lgg.tum.norm <- TumorNormalMatch(rnaseq.lgg$dat)
+coadread.tum.norm <- TumorNormalMatch(rnaseq.coadread$dat)
+kipan.tum.norm <- TumorNormalMatch(rnaseq.kipan$dat)
+meso.tum.norm <- TumorNormalMatch(rnaseq.meso$dat)
+sarc.tum.norm <- TumorNormalMatch(rnaseq.sarc$dat)
+thca.tum.norm <- TumorNormalMatch(rnaseq.thca$dat)
+thym.tum.norm <- TumorNormalMatch(rnaseq.thym$dat)
+ucec.tum.norm <- TumorNormalMatch(rnaseq.ucec$dat)
+ucs.tum.norm <- TumorNormalMatch(rnaseq.ucs$dat)
+save(brca.tum.norm, file = "brca.tum.norm.RData")
+save(coadread.tum.norm, file = "coadread.tum.norm.RData")
+save(kipan.tum.norm, file = "kipan.tum.norm.RData")
+save(sarc.tum.norm, file = "sarc.tum.norm.RData")
+save(thca.tum.norm, file = "thca.tum.norm.RData")
+save(thym.tum.norm, file = "thym.tum.norm.RData")
+save(ucec.tum.norm, file = "ucec.tum.norm.RData")
 
 
 

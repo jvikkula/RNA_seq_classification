@@ -12,7 +12,6 @@ ziplda <- function(x,x_test, y, beta = 1, prior, method = c('mle','deseq','quant
   # method: method to compute size factor
   # return predicted classes and the log probabbilities for each observation
   
-  # Implement method which takes into account the method (mle, deseq or quantile), when computing Nhat
   Nhat <- compute.nhat(x)
   Nhat_test <- compute.nhat.test(x, x_test, method)
   classes = sort(unique(y))

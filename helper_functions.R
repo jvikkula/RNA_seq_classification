@@ -24,11 +24,7 @@ compute.shat <- function(x_train,x_test,method = c('mle','deseq','quatile')){
 
 
 compute.nhat <- function(x){
-  Xi_dot = rowSums(x)
-  Xdot_j = colSums(x)
-  Xdotdot = sum(x)
-  # Implement method which takes into account the method (mle, deseq or quantile), when computing Nhat
-  Nhat = outer(Xi_dot, Xdot_j, '*')/Xdotdot
+  Nhat = outer(rowSums(x), colSums(x), '*')/sum(x)
   return(Nhat)
 }
 

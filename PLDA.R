@@ -16,28 +16,14 @@ PLDA <- function(x,x_test, y, beta = 1, prior=NULL, method = c('mle','deseq','qu
   Xdot_j = colSums(x)
   Xdotdot = sum(x)
   
-  # Implement method which takes into account the method (mle, deseq or quantile), when computing Nhat
-  Nhat = outer(Xi_dot, Xdot_j, '*')/Xdotdot
-  
+  Nhat <- compute.nhat(x)
+  Nhat_test <- compute.nhat.test(x, x_test, method)
   classes = sort(unique(y))
-  
-  dhat <- matrix(0,nrow=length(classes),ncol=length(Xdot_j))
-  for(i in 1:length(classes)){
-    numerator = colSums(x[y==classes[i],])+beta
-    denominator = colSums(Nhat[y==classes[i],])+beta
-    division = numerator/denominator
-    colnames(division) = NULL
-    dhat[i,] = division
-  }
- 
-  shat = compute.shat(x, x_test, method)  
-  ghat = colSums(x)
-  
+  dhat <- compute.dhat(x, y, Nhat, beta)
+
   p = matrix(0,ncol = length(classes),nrow = nrow(x_test))
   for (i in 1:length(classes)){
-    #p[,i] = rowSums(x_test*log(dhat[i,]))-rowSums(outer(shat, ghat, '*')*dhat[i,])+log(prior[i])
-    #p[,i] = rowSums(x_test/log(dhat[i,]))-rowSums(outer(shat, ghat, '*')/dhat[i,])+log(prior[i])
-    p[,i] = rowSums(scale(x_test, center=FALSE, scale=(1/log(dhat[i,])))) - rowSums(scale(outer(shat, ghat, '*'), center = FALSE, scale = (1/dhat[i,]))) + log(prior[i])
+    p[,i] = rowSums(scale(x_test, center=FALSE, scale=(1/log(dhat[i,])))) - rowSums(scale(Nhat_test, center = FALSE, scale = (1/dhat[i,]))) + log(prior[i])
   }
   yhat = classes[apply(p,1,which.max)]
   return(list(p = p, yhat = yhat)) 

@@ -579,7 +579,7 @@ ucs_clinic <- ucs_data[[2]]
 head(ucs_counts[, 1:20])
 summary(ucs_clinic)
 
-ucs1 <- filter_classes(counts=ucs_counts, clinical=ucs_clinic, clinical_filter='uterine carcinosarcoma/ malignant mixed mullerian tumor (mmmt)')
+ucs1 <- filter_classes(counts=ucs_counts, clinical=ucs_clinic, clinical_filter='uterine carcinosarcoma/ malignant mixed mullerian tumor (mmmt): nos')
 ucs2 <- filter_classes(counts=ucs_counts, clinical=ucs_clinic, clinical_filter='uterine carcinosarcoma/ mmmt: heterologous type')
 ucs3 <- filter_classes(counts=ucs_counts, clinical=ucs_clinic, clinical_filter="uterine carcinosarcoma/mmmt: homologous type")
 
@@ -595,7 +595,7 @@ ucs_clinic <- ucs_data[[2]]
 head(ucs_counts[, 1:20])
 summary(ucs_clinic)
 
-ucs1 <- filter_classes(counts=ucs_counts, clinical=ucs_clinic, clinical_filter='uterine carcinosarcoma/ malignant mixed mullerian tumor (mmmt)')
+ucs1 <- filter_classes(counts=ucs_counts, clinical=ucs_clinic, clinical_filter='uterine carcinosarcoma/ malignant mixed mullerian tumor (mmmt): nos')
 ucs2 <- filter_classes(counts=ucs_counts, clinical=ucs_clinic, clinical_filter='uterine carcinosarcoma/ mmmt: heterologous type')
 ucs3 <- filter_classes(counts=ucs_counts, clinical=ucs_clinic, clinical_filter="uterine carcinosarcoma/mmmt: homologous type")
 

@@ -4,7 +4,8 @@ import pandas as pd
 import numpy as np
 import sklearn
 from sklearn.model_selection import train_test_split
-from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import GridSearchCV, StratifiedKFold
 import time
 
 def load_datasets(*args):
@@ -54,7 +55,7 @@ def hyper_param_gsearch(X_test, y_test):
                 "eval_set" : [[X_test, y_test]]}
 
     gsearch = GridSearchCV(estimator=xgb_classifier,
-                           param_grid=grid_params, 
+                           param_grid=grid_params,
                            fit_params=fit_params,
                            n_jobs=4,
                            iid=False,

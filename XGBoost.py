@@ -27,7 +27,7 @@ def create_labels(*kwargs):
 
     return labels
 
-def hyper_param_gsearch(param_dict):
+def hyper_param_gsearch(X_test, y_test):
     """args: dictionary of parameter options"""
     xgb_classifier = XGBClassifier(learning_rate=0.1,
                                    n_estimators=140,
@@ -41,11 +41,24 @@ def hyper_param_gsearch(param_dict):
                                    scale_pos_weight=1,
                                    seed=27)
 
+    grid_params = {
+        'learning_rate':list(np.linspace(0.04, 0.1, 5)),
+        'max_depth':[4,6,8,10],
+        'min_child_weight':range(1,10,1),
+        'sub_sample':list(np.linspace(0.5, 1, 5)),
+        'colsample_bytree':list(np.linspace(0.4, 1, 5))
+    }
+
+    fit_params={"early_stopping_rounds":20,
+                "eval_metric" : "rmse",
+                "eval_set" : [[X_test, y_test]]}
+
     gsearch = GridSearchCV(estimator=xgb_classifier,
-                           param_grid=param_dict,
+                           param_grid=grid_params, 
+                           fit_params=fit_params,
                            n_jobs=4,
                            iid=False,
-                           cv=5)
+                           cv=3)
     return gsearch
 
 if __name__=="__main__":
@@ -56,14 +69,7 @@ if __name__=="__main__":
     labels = create_labels(datasets)
     X_train, X_test, y_train, y_test = train_test_split(full_data, labels, test_size=0.33, random_state=1234)
 
-    param_dict = {
-        'learning_rate':list(np.linspace(0.04, 0.1, 5)),
-        'max_depth':[4,6,8,10],
-        'min_child_weight':range(1,10,1),
-        'sub_sample':list(np.linspace(0.5, 1, 5)),
-        'colsample_bytree':list(np.linspace(0.4, 1, 5))
-    }
-    gsearch = hyper_param_gsearch(param_dict)
+    gsearch = hyper_param_gsearch(X_test, y_test)
     xgb_train_start = time.perf_counter()
     gsearch.fit(X_train, y_train)
     xgb_train_end = time.perf_counter()

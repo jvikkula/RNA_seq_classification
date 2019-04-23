@@ -18,7 +18,7 @@ import os
 ###############################################################################
 # Paths to datasets
 
-# UNPROCESSED DATASETS
+# # UNPROCESSED DATASETS
 path_ductal = "~/LST/rnaseqV2data/unprocessed_rnaseqV2/brca/brca_rsem_unprocessed/brca_ductal_rsem_unprocessed.csv"
 path_lobular = "~/LST/rnaseqV2data/unprocessed_rnaseqV2/brca/brca_rsem_unprocessed/brca_lobular_rsem_unprocessed.csv"
 path_colon_adeno = "~/LST/rnaseqV2data/unprocessed_rnaseqV2/coadread/coadread_rsem_unprocessed/colon_adenocarcinoma_rsem_unprocessed.csv"
@@ -50,9 +50,9 @@ path_thym_c = "~/LST/rnaseqV2data/unprocessed_rnaseqV2/thym/thym_rsem_unprocesse
 path_ucec_endometrial = "~/LST/rnaseqV2data/unprocessed_rnaseqV2/ucec/ucec_rsem_unprocessed/endometrioid_endometrial_adenocarcinoma_rsem_unprocessed.csv"
 path_ucec_mixed_serous = "~/LST/rnaseqV2data/unprocessed_rnaseqV2/ucec/ucec_rsem_unprocessed/mixed_serous_and_endometrioid_rsem_unprocessed.csv"
 path_ucec_serous_endo = "~/LST/rnaseqV2data/unprocessed_rnaseqV2/ucec/ucec_rsem_unprocessed/serous_endometrial_adenocarcinoma_rsem_unprocessed.csv"
-path_ucs_mixed = "~/LST/UCS-datasets/unprocessed_rnaseqV2/malignant_mixed_mullerian_tumor_rsem_unprocessed.csv"
-path_ucec_heterologous = "~/LST/UCS-datasets/unprocessed_rnaseqV2/mmmt_heterologous_type_rsem_unprocessed.csv"
-path_ucec_homologous = "~/LST/UCS-datasets/unprocessed_rnaseqV2/mmmt_homologous_type_rsem_unprocessed.csv"
+path_ucs_mixed = "~/LST/rnaseqV2data/unprocessed_rnaseqV2/usc/ucs_rsem_unprocessed/malignant_mixed_mullerian_tumor_rsem_unprocessed.csv"
+path_ucs_heterologous = "~/LST/rnaseqV2data/unprocessed_rnaseqV2/usc/ucs_rsem_unprocessed/mmmt_heterologous_type_rsem_unprocessed.csv"
+path_ucs_homologous = "~/LST/rnaseqV2data/unprocessed_rnaseqV2/usc/ucs_rsem_unprocessed/mmmt_homologous_type_rsem_unprocessed.csv"
 
 # PROCESSED DATASETS
 # path_ductal = "~/LST/rnaseqV2data/processed_rnaseqV2/brca/brca_rsem_processed/brca_ductal_rsem_processed.csv"
@@ -87,8 +87,8 @@ path_ucec_homologous = "~/LST/UCS-datasets/unprocessed_rnaseqV2/mmmt_homologous_
 # path_ucec_mixed_serous = "~/LST/rnaseqV2data/processed_rnaseqV2/ucec/ucec_rsem_processed/mixed_serous_and_endometrioid_rsem_processed.csv"
 # path_ucec_serous_endo = "~/LST/rnaseqV2data/processed_rnaseqV2/ucec/ucec_rsem_processed/serous_endometrial_adenocarcinoma_rsem_processed.csv"
 # path_ucs_mixed = "~/LST/UCS-datasets/processed_rnaseqV2/malignant_mixed_mullerian_tumor_rsem_processed.csv"
-# path_ucec_heterologous = "~/LST/UCS-datasets/processed_rnaseqV2/mmmt_heterologous_type_rsem_processed.csv"
-# path_ucec_homologous = "~/LST/UCS-datasets/processed_rnaseqV2/mmmt_homologous_type_rsem_processed.csv"
+# path_ucs_heterologous = "~/LST/UCS-datasets/processed_rnaseqV2/mmmt_heterologous_type_rsem_processed.csv"
+# path_ucs_homologous = "~/LST/UCS-datasets/processed_rnaseqV2/mmmt_homologous_type_rsem_processed.csv"
 
 # PROCESSED LOG2 DATASETS
 # path_ductal = "~/LST/rnaseqV2data/processed_rnaseqV2/brca/brca_rsem_processed_log2/brca_ductal_rsem_processed_log2.csv"
@@ -122,9 +122,9 @@ path_ucec_homologous = "~/LST/UCS-datasets/unprocessed_rnaseqV2/mmmt_homologous_
 # path_ucec_endometrial = "~/LST/rnaseqV2data/processed_rnaseqV2/ucec/ucec_rsem_processed_log2/endometrioid_endometrial_adenocarcinoma_rsem_processed_log2.csv"
 # path_ucec_mixed_serous = "~/LST/rnaseqV2data/processed_rnaseqV2/ucec/ucec_rsem_processed_log2/mixed_serous_and_endometrioid_rsem_processed_log2.csv"
 # path_ucec_serous_endo = "~/LST/rnaseqV2data/processed_rnaseqV2/ucec/ucec_rsem_processed_log2/serous_endometrial_adenocarcinoma_rsem_processed_log2.csv"
-# path_ucs_mixed = "~/LST/UCS-datasets/processed_rnaseqV2/malignant_mixed_mullerian_tumor_rsem_processed_log2.csv"
-# path_ucec_heterologous = "~/LST/UCS-datasets/processed_rnaseqV2/mmmt_heterologous_type_rsem_processed_log2.csv"
-# path_ucec_homologous = "~/LST/UCS-datasets/processed_rnaseqV2/mmmt_homologous_type_rsem_processed_log2.csv"
+# path_ucs_mixed = "~/LST/rnaseqV2data/processed_rnaseqV2/usc/ucs_rsem_processed_log2/malignant_mixed_mullerian_tumor_rsem_processed_log2.csv"
+# path_ucs_heterologous = "~/LST/rnaseqV2data/processed_rnaseqV2/usc/ucs_rsem_processed_log2/mmmt_heterologous_type_rsem_processed_log2.csv"
+# path_ucs_homologous = "~/LST/rnaseqV2data/processed_rnaseqV2/usc/ucs_rsem_processed_log2/mmmt_homologous_type_rsem_processed_log2.csv"
 
 ###############################################################################
 ###############################################################################

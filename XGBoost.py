@@ -14,6 +14,7 @@ from sklearn.metrics import confusion_matrix
 from collections import Counter
 import time
 import os
+import sys
 
 ###############################################################################
 # Paths to datasets
@@ -211,11 +212,10 @@ def run_grid_search(X_test, y_test):
 ###############################################################################
 # Model fitting and stratified k-fold cross validation
 def fit_single_model(model, X_train, y_train, eval_set, multi=False):
-    """args:
-        model = xgb-classifier object,
-        X_train, y_train = train data and labels,
-        eval_set = a list of test and train data/label tuples
-        multi = Flag to set the classification to multiclass or binary
+    """args: model = xgb-classifier object,
+             X_train, y_train = train data and labels,
+             eval_set = a list of test and train data/label tuples
+             multi = flag to set the classification to multiclass or binary
     """
     # eval_metric based on binary/multiclass classification paradigm
     eval_metric=["merror", "mlogloss"] if multi else ["error", "logloss"]
@@ -239,7 +239,12 @@ def fit_single_model(model, X_train, y_train, eval_set, multi=False):
 
 
 def cross_validate(model, full_data, labels, fit_params, multi=False):
-
+    """args: model=the classifier object,
+             full_data=full count data df,
+             labels=labels of the full data,
+             fit_params=dictionary of model fitting parameters,
+             multi=flag to set the classification to multiclass or binary
+    """
     # eval_metric based on binary/multiclass classification paradigm
     eval_metric=["merror", "mlogloss"] if multi else ["error", "logloss"]
 
@@ -253,7 +258,10 @@ def cross_validate(model, full_data, labels, fit_params, multi=False):
 ###############################################################################
 # PLOT FEATURE IMPORTANCES AND CLASSIFICATION ERRORS
 def plot_errors(model, save=False, filename=None, multi=False):
-    """args: model = classifier object, save=flag to save the image, filename=image filename"""
+    """args: model=classifier object,
+             save=flag to save the image,
+             filename=image filename
+    """
 
     if multi:
         error='merror'
@@ -290,6 +298,10 @@ def plot_errors(model, save=False, filename=None, multi=False):
 
 # PLOT THE 100 MOST IMPORTANT FEATURES OF ONE SINGLE BOOSTER
 def plot_importances(model save=False, filename=None):
+    """args: model=classifier object,
+             save=flag to save the image,
+             filename=image filename
+    """
     pyplot.rcParams['figure.figsize'] = [18, 18]
     fig = plot_importance(model, importance_type='gain', max_num_features=100, height=1)
 
@@ -300,6 +312,7 @@ def plot_importances(model save=False, filename=None):
 
 # PLOT CONFUSION MATRIX
 def plot_confusion(labels, prediction, save=False, filename=None):
+    """args: labels=labels of the data, prediction=redicted labels, save=flag to save the image, filename=image filename"""
     conf = confusion_matrix(labels, y_pred)
     columns = ['class {}'.format(i) for i in np.unique(labels)]
     df_cm = pd.DataFrame(conf, index=columns, columns=columns)
@@ -365,7 +378,7 @@ if __name__=="__main__":
                           seed=27)
 
     predictions, accuracy = fit_single_model(model, X_train, y_train, eval_set, multi=multi)
-    k_fold_accuracies, k_fold_predictions = cross_validate(model, full_data, labels, fit_params, multi=False)
+    k_fold_accuracies, k_fold_predictions = cross_validate(model, full_data, labels, fit_params, multi=multi)
     plot_importances(model)
     plot_confusion(model)
     plot_errors(model, multi=multi)

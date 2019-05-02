@@ -23,7 +23,8 @@ NBLDA <- function(x, x_test, y, disperhat, beta = 1, prior = NULL, method = c('m
   shats <- size_estimation(x, x_test, method)
   
   # Estimate dkgs
-  dkg <- matrix(0, nrow = n_classes, ncol = ncol(x))
+  # DKGs are fine
+  dkg <- matrix(1, nrow = n_classes, ncol = ncol(x))
   for (i in 1:n_classes){
     num <- colSums(x[y == classes[i],]) + beta
     denom <- sum(shats$train[y == classes[i]]) * lambda_g + beta
@@ -32,21 +33,21 @@ NBLDA <- function(x, x_test, y, disperhat, beta = 1, prior = NULL, method = c('m
     dkg[i,] = div
   }
   
-  disc <- matrix(0, nrow = nrow(x_test), ncol = n_classes)
+  disc <- matrix(NA, nrow = nrow(x_test), ncol = n_classes)
   
   # Loop through number of classes
-  for (i in n_classes) {
+  for (i in 1:n_classes) {
     # Loop through samples in test data
     for (j in 1:nrow(x_test))
     {
       dstar <- dkg[i,]
-      p2 <- shats$test[j] * lambda_g * dstar * disperhat 
+      p2 <- 1 + shats$test[j] * lambda_g * dstar * disperhat 
       p1 <- dstar / p2
       disc[j,i] <- sum(x_test[j,] * log(p1)) - sum( (1/disperhat) * log(p2) + log(prior[i]))
     }
   }
   y_test <- classes[apply(disc, 1, which.max)]
-  return(y_test)
+  return(list(pred = y_test, ns = shats, ds = dkg, disc = disc))
 }
 
 size_estimation <- function(x_train, x_test, method) {

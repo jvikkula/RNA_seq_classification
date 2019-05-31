@@ -24,8 +24,6 @@ get.accuracy <- function(data, y, func = c('PLDA','ZIPLDA'), prior, method){
       prob0 <- point.mass.at.zero(train, test, ytrain, beta=1, method=method)
       out <- ziplda(train, test, ytrain, prior = prior, method = method, prob0 = prob0)
     }
-    #output[[paste('yhat',k,sep='')]] <- out$yhat
-    #output[[paste('ytrue',k,sep='')]] <- ytrue
     tb <- table(ytrue, out$yhat)
     acc[k] <- sum(diag(tb))/sum(tb)
   }
@@ -33,7 +31,6 @@ get.accuracy <- function(data, y, func = c('PLDA','ZIPLDA'), prior, method){
   print(stop-start)
   cat('Accuracies are:', acc, '\n')
   cat('Mean prediction accuracy for', method, 'with 5-fold cross validation is', round(mean(acc)*100,2), '% \n')
-  #return(output)
 }
 
 

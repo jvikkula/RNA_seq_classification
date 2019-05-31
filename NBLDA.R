@@ -11,6 +11,8 @@ NBLDA <- function(x, x_test, y, disperhat, beta = 1, prior = NULL, method = c('m
   if (is.null(prior)){
     prior <- rep(1/length(unique(y)), length(unique(y))) 
   }
+  
+  print(prior)
   # Colsums, amount of reads per gene
   lambda_g <- colSums(x)
   # Rowsums, amount of reads per sample
@@ -43,7 +45,7 @@ NBLDA <- function(x, x_test, y, disperhat, beta = 1, prior = NULL, method = c('m
       dstar <- dkg[i,]
       p2 <- 1 + shats$test[j] * lambda_g * dstar * disperhat 
       p1 <- dstar / p2
-      disc[j,i] <- sum(x_test[j,] * log(p1)) - sum( (1/disperhat) * log(p2) + log(prior[i]))
+      disc[j,i] <- sum(x_test[j,] * log(p1)) - sum( (1/disperhat) * log(p2)) + log(prior[i])
     }
   }
   y_test <- classes[apply(disc, 1, which.max)]

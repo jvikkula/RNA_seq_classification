@@ -97,8 +97,10 @@ kfold <- function(splitlist, df) {
     train <- train[,-ncol(train)]
     test <- test[,-ncol(test)]
     
+    prior <- table(y_train)/length(y_train)
+
     disp <- estimate_dispersion(train)
-    pred <- NBLDA(train, test, y_train, disp, method = "mle")
+    pred <- NBLDA(train, test, y_train, disp, method = "quantile", prior = prior)
     conf <- confusionMatrix(factor(y_test, levels = levels(as.factor(pred$pred))), as.factor(pred$pred))
     conf.matrices[[paste0(i)]] <- conf
     print(conf)
@@ -106,7 +108,8 @@ kfold <- function(splitlist, df) {
   }
   avg <- mean(accuracies)
   print(avg)
-  return(list(accuracies=accuracies, conf.matrices = conf.matrices))
+  res <- list(accuracies=accuracies, conf.matrices = conf.matrices)
+  return(res)
 }
 
 ###################
@@ -147,17 +150,17 @@ if (kfolds) {
 col.ade <- read.csv("data/rnaseqV2data/processed_rnaseqV2/coaread/coadread_rsem_processed/colon_adenocarcinoma_raw.csv", header = TRUE, sep = '\t')
 col.muc <- read.csv("data/rnaseqV2data/processed_rnaseqV2/coaread/coadread_rsem_processed/colon_mucinous_adenocarcinoma_raw.csv", header = TRUE, sep = '\t')
 rec.ade <- read.csv("data/rnaseqV2data/processed_rnaseqV2/coaread/coadread_rsem_processed/rectal_adenocarcinoma_raw.csv", header = TRUE, sep = '\t') 
-rec.muc <- read.csv("data/rnaseqV2data/processed_rnaseqV2/coaread/coadread_rsem_processed/rectal_mucinous_adenocarcinoma_raw.csv", header = TRUE, sep = '\t')
+#rec.muc <- read.csv("data/rnaseqV2data/processed_rnaseqV2/coaread/coadread_rsem_processed/rectal_mucinous_adenocarcinoma_raw.csv", header = TRUE, sep = '\t')
 
 col.ade <- rbind(col.ade, rep(0))
 col.muc <- rbind(col.muc, rep(1))
 rec.ade <- rbind(rec.ade, rep(2))
-rec.muc <- rbind(rec.muc, rep(3))
-combined <- cbind(col.ade, col.muc, rec.ade, rec.muc)
+#rec.muc <- rbind(rec.muc, rep(3))
+combined <- cbind(col.ade, col.muc, rec.ade)
 split <- createFolds(combined, k = 5)
 combined <- transpose_df(combined)
 
-rm(col.ade, col.muc, rec.ade, rec.muc)
+rm(col.ade, col.muc, rec.ade)
 
 if (kfolds) {
   print("Starting COAREAD analysis")
@@ -243,20 +246,20 @@ if (kfolds) {
 ###################
 
 meso.bipha <- read.csv("data/rnaseqV2data/processed_rnaseqV2/meso/meso_rsem_processed/biphasic_mesothelioma_rsem_processed.csv", header = TRUE, sep = '\t')
-meso.diff <- read.csv("data/rnaseqV2data/processed_rnaseqV2/meso/meso_rsem_processed/diffuse_malignant_mesothelioma_rsem_processed.csv", header = TRUE, sep = '\t')
+#meso.diff <- read.csv("data/rnaseqV2data/processed_rnaseqV2/meso/meso_rsem_processed/diffuse_malignant_mesothelioma_rsem_processed.csv", header = TRUE, sep = '\t')
 meso.epit <- read.csv("data/rnaseqV2data/processed_rnaseqV2/meso/meso_rsem_processed/epithelioid_mesothelioma_rsem_processed.csv", header = TRUE, sep = '\t')
 #meso.sarco <- read.csv("data/rnaseqV2data/processed_rnaseqV2/meso/meso_rsem_processed/sarcomatoid_mesotheliomarsem_processed.csv", header = TRUE, sep = '\t')
 
 meso.bipha <- rbind(meso.bipha, rep(0))
-meso.diff <- rbind(meso.diff, rep(1))
+#meso.diff <- rbind(meso.diff, rep(1))
 meso.epit <- rbind(meso.epit, rep(2))
 #meso.sarco <- rbind(meso.sarco, rep(3))
-combined <- cbind(meso.bipha, meso.diff, meso.epit)
+combined <- cbind(meso.bipha, meso.epit)
 #combined <- cbind(meso.bipha, meso.diff, meso.epit, meso.sarco)
 split <- createFolds(combined, k = 5)
 combined <- transpose_df(combined)
 
-rm(meso.bipha, meso.diff, meso.epit)
+rm(meso.bipha, meso.epit)
 
 if (kfolds) {
   print("Starting MESO analysis")
@@ -283,12 +286,13 @@ sarcoma.myxo <- read.csv("data/rnaseqV2data/processed_rnaseqV2/sarcoma/sarcoma_r
 sarcoma.pleo <- read.csv("data/rnaseqV2data/processed_rnaseqV2/sarcoma/sarcoma_rsem_processed/pleomorphic_mfh_raw.csv", header = TRUE, sep = '\t')
 sarcoma.undif <- read.csv("data/rnaseqV2data/processed_rnaseqV2/sarcoma/sarcoma_rsem_processed/undifferentiated_pleomorphic_sarcoma_raw.csv", header = TRUE, sep = '\t')
 
-sarcoma.ded <- rbind(sarcoma.ded, rep(0))
-sarcoma.leio <- rbind(sarcoma.leio, rep(1))
-sarcoma.mal <- rbind(sarcoma.mal, rep(2))
+sarcoma.leio <- rbind(sarcoma.leio, rep(0))
+sarcoma.ded <- rbind(sarcoma.ded, rep(1))
+sarcoma.pleo <- rbind(sarcoma.pleo, rep(2))
 sarcoma.myxo <- rbind(sarcoma.myxo, rep(3))
-sarcoma.pleo <- rbind(sarcoma.pleo, rep(4))
-sarcoma.undif <- rbind(sarcoma.undif, rep(5))
+sarcoma.undif <- rbind(sarcoma.undif, rep(4))
+sarcoma.mal <- rbind(sarcoma.mal, rep(5))
+
 combined <- cbind(sarcoma.ded, sarcoma.leio, sarcoma.mal, sarcoma.myxo, sarcoma.pleo, sarcoma.undif)
 split <- createFolds(combined, k = 5)
 combined <- transpose_df(combined)
@@ -352,8 +356,8 @@ thymoma.b2 <- read.csv("data/rnaseqV2data/processed_rnaseqV2/thymoma/thymoma_rse
 thymoma.b3 <- read.csv("data/rnaseqV2data/processed_rnaseqV2/thymoma/thymoma_rsem_processed/thymoma_type_b3_rsem_processed.csv", header = TRUE, sep = '\t')
 thymoma.c <- read.csv("data/rnaseqV2data/processed_rnaseqV2/thymoma/thymoma_rsem_processed/thymoma_type_c_raw.csv", header = TRUE, sep = '\t')
 
-thymoma.ab <- rbind(thymoma.ab, rep(0))
-thymoma.a <- rbind(thymoma.a, rep(1))
+thymoma.a <- rbind(thymoma.a, rep(0))
+thymoma.ab <- rbind(thymoma.ab, rep(1))
 thymoma.b1 <- rbind(thymoma.b1, rep(2))
 thymoma.b2 <- rbind(thymoma.b2, rep(3))
 thymoma.b3 <- rbind(thymoma.b3, rep(4))
@@ -409,6 +413,37 @@ if (kfolds) {
   conf.ucec <- confusionMatrix(as.factor(final$y_test), as.factor(pred$pred))
 }
 
+##################
+## UCS-analysis ##
+##################
+
+ucs.mal <- read.csv("data/rnaseqV2data/processed_rnaseqV2/ucs/ucs_rsem_processed/malignant_mixed_mullerian_tumor_rsem_processed.csv", header = TRUE, sep = '\t')
+ucs.mmmt.hetero <- read.csv("data/rnaseqV2data/processed_rnaseqV2/ucs/ucs_rsem_processed/mmmt_heterologous_type_rsem_processed.csv", header = TRUE, sep = '\t')
+ucs.mmmt.homo <- read.csv("data/rnaseqV2data/processed_rnaseqV2/ucs/ucs_rsem_processed/mmmt_homologous_type_rsem_processed.csv", header = TRUE, sep = '\t')
+
+ucs.mal <- rbind(ucs.mal, rep(0))
+ucs.mmmt.hetero <- rbind(ucs.mmmt.hetero, rep(1))
+ucs.mmmt.homo <- rbind(ucs.mmmt.homo, rep(2))
+combined <- cbind(ucs.mal, ucs.mmmt.hetero, ucs.mmmt.homo)
+split <- createFolds(combined, k = 5)
+combined <- transpose_df(combined)
+
+rm(ucs.mal, ucs.mmmt.hetero, ucs.mmmt.homo)
+
+if (kfolds) {
+  start <- Sys.time()
+  res <- kfold(split, combined)
+  end <- Sys.time()
+  save(res, file = "results/UCS_kfold.RData")
+} else {
+  combined <- combined[sample(nrow(combined)),]
+  final <- split_data(combined)
+  disp <- estimate_dispersion(final$train)
+  pred <- NBLDA(final$train, final$test, final$y_train, disp, method = "mle")
+  conf.ucs <- confusionMatrix(as.factor(final$y_test), as.factor(pred$pred))
+}
+
+
 load("results/BRCA_kfold.RData")
 mean(res$accuracies)
 
@@ -436,35 +471,8 @@ mean(res$accuracies)
 load("results/UCEC_kfold.RData")
 mean(res$accuracies)
 
-##################
-## UCS-analysis ##
-##################
-
-#ucs.mal <- read.csv("data/rnaseqV2data/processed_rnaseqV2/ucs/ucs_rsem_processed/malignant_mixed_mullerian_tumor_rsem_processed.csv", header = TRUE, sep = '\t')
-# ucs.mmmt.hetero <- read.csv("data/rnaseqV2data/processed_rnaseqV2/ucs/ucs_rsem_processed/mmmt_heterologous_type_rsem_processed.csv", header = TRUE, sep = '\t')
-# ucs.mmmt.homo <- read.csv("data/rnaseqV2data/processed_rnaseqV2/ucs/ucs_rsem_processed/mmmt_homologous_type_rsem_processed.csv", header = TRUE, sep = '\t')
-# 
-# ucs.mal <- rbind(ucs.mal, rep(0))
-# ucs.mmmt.hetero <- rbind(ucs.mmmt.hetero, rep(1))
-# ucs.mmmt.homo <- rbind(ucs.mmmt.homo, rep(2))
-# combined <- cbind(ucs.mal, ucs.mmmt.hetero, ucs.mmmt.homo)
-# split <- createFolds(combined, k = 5)
-# combined <- transpose_df(combined)
-# 
-# rm(ucs.mal, ucs.mmmt.hetero, ucs.mmmt.homo)
-# 
-# if (kfolds) {
-#   start <- Sys.time()
-#   res <- kfold(split, combined)
-#   end <- Sys.time()
-#   save(res, file = "results/USC_kfold.RData")
-# } else {
-#   combined <- combined[sample(nrow(combined)),]
-#   final <- split_data(combined)
-#   disp <- estimate_dispersion(final$train)
-#   pred <- NBLDA(final$train, final$test, final$y_train, disp, method = "mle")
-#   conf.ucs <- confusionMatrix(as.factor(final$y_test), as.factor(pred$pred))
-# }
+load("results/UCS_kfold.RData")
+mean(res$accuracies)
 
 if (kfolds = FALSE) {
 confusion.matrices <- list("brca" = conf.brca, "coadread" = conf.coaread, "kipan" = conf.kipan, "lgg" = conf.lgg,
